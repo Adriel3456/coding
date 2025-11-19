@@ -54,3 +54,76 @@ def draw_windowed(red, yellow, red_bullets, yellow_bullets, red_health, yellow_h
     yellow_health_text = HEALTH_FONT.render("healthh: " + str(yellow_health), 1, WHITE)
     WIN.blit(red_health_text, (WIDTH - red_health_text.get_width() -10, 10))
     WIN.blit(yellow_health_text, (10, 10))
+
+    WIN.blit(YELLOW_SPACESHIP, (yellow.x, yellow.y))
+    WIN.blit(RED_SPACESHIP, (red.x, red.y))
+
+    for bullet in red_bullets:
+        pygame.draw.rect(WIN, RED, bullet)
+
+    for bullet in yellow_bullets:
+        pygame.draw.rect(WIN, YELLOW, bullet)
+
+    pygame.display.update()
+
+
+    def yellow_handle_movement(keys_pressed, yellow):
+        if keys_pressed[pygame.K_a] and yellow.x - VEL > 0: # left
+            yellow.x -= VEL
+        if keys_pressed[pygame.K_d] and yellow.x + VEL + yellow.width < BORDER: # right
+            yellow.x += VEL
+        if keys_pressed[pygame.K_w] and yellow.x - VEL > 0: # up
+            yellow.y -= VEL
+        if keys_pressed[pygame.K_s] and yellow.x + VEL + yellow.height < HEIGHT
+            yellow.y += VEL
+
+    
+    def red_handle_movement(keys_pressed, red):
+        if keys_pressed[pygame.K_UP] and red.x - VEL > 0: # up
+            red.x -= VEL
+        if keys_pressed[pygame.K_DOWN] and red.x + VEL + yellow.width < BORDER: # down
+            red.x += VEL
+        if keys_pressed[pygame.K_LEFT] and red.x - VEL > 0: # left
+            red.y -= VEL
+        if keys_pressed[pygame.K_RIGHT] and red.x + VEL + yellow.height < HEIGHT 
+            red.y += VEL
+
+def handle_bullets(yellow_bullets, red_bullets, yellow, red):
+    for bullet in yellow_bullets:
+        bullet.x += BULLET_VEL
+        if red.colliderect(bullet):
+            pygame.event.post(pygame.event.Event(RED_HIT))
+            yellow_bullets.remove(bullet)
+        elif bullet.x > WIDTH:
+            yellow_bullets.remove(bullet)
+
+    for bullet in red_bullets:
+        bullet.x -= BULLET_VEL
+        if yellow.colliderect(bullet):
+            pygame.event.post(pygame.event.Event(YELLOW_HIT))
+            red_bullets.remove(bullet)
+        elif bullet.x < 0:
+            red_bullets.remove(bullet)
+
+
+def draw_winner(text):
+    draw_text = WINNER_FONT.render(text, 1, WHITE)
+    WIN.blit(draw_text, (WIDTH/2 - draw_text.get_width() / 
+                         2, HEIGHT/2 - draw_text.get_height()/2))
+    pygame.display.update()
+    pygame.time.delay(5000)
+
+
+    def main():
+        red = pygame.Rect(700, 300, SPACESHIP_WIDTH, SPACESHIP_HEIGHT)
+        yellow = pygame.Rect(100, 300, SPACESHIP_WIDTH, SPACESHIP_HEIGHT)
+
+        red_bullets = []
+        yellow_bullets = []
+
+        red_health = 10
+        yellow_health = 10
+
+        clock = pygame.time.Clock()
+        run = True
+        while run:
