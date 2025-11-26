@@ -14,8 +14,8 @@ YELLOW = (255, 255, 0)
 
 BORDER = pygame.Rect(WIDTH//2 - 5, 0, 10, HEIGHT)
 
-#Bullet_HIT_SOUND = pygame.mixer.sound('assets/granade+1.mp3)
-#Bullet_FIRE_sound = pygame.mixer.sound('assets/guns+silencer.mp3)
+#Bullet_HIT_SOUND = pygame.mixer.sound('Bullet_HIT_SOUND.mp3)
+#Bullet_FIRE_sound = pygame.mixer.sound('Bullet_FIRE_sound.mp3)
 
 HEALTH_FONT = pygame.sysfont('comicsans', 40)
 WINNER_FONT = pygame.sysfont('comicsans', 100)
@@ -127,3 +127,44 @@ def draw_winner(text):
         clock = pygame.time.Clock()
         run = True
         while run:
+            clock.tick(FPS)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    pygame.quit
+                
+
+                if event.type == RED_HIT:
+                    red_health -= 1
+                    #Bullet_HIT_SOUND.play()
+
+                if event.type == YELLOW_HIT:
+                    red_health -= 1
+                    #Bullet_HIT_SOUND.play()
+            Winner_text = ""
+            if red_health <= 0:
+                winner_text = "yellow Wins"
+
+            
+            if yellow_health <= 0:
+                winner_text = "Red Wins"
+
+            if winner_text  != "":
+                draw_winner(winner_text)
+                break
+
+            keys_pressed = pygame.key.get_pressed()
+            yellow_handle_movement(keys_pressed, yellow)
+            red_handle_movement(keys_pressed, red)
+
+            handle_bullets(yellow_bullets, red_bullets, yellow, red)
+
+            draw_windowed(red, yellow, red_bullets, yellow_bullets,
+                          red_health, yellow_health)
+        
+        main()
+
+
+if __name__ == "__main__"
+    main()
+
