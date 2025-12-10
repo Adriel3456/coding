@@ -27,12 +27,3 @@ screen.blit(text3,(350,100))
 screen.blit(text4,(350,100))
 pygame.display.update()
 
-
-while 1:
-    event = pygame.event.poll()
-    
-    if event.type == pygame.MOUSEBUTTONDOWN:
-       pos = pygame.mouse.get_pos()
-       pygame.draw.circle(screen, (0,0,0), (pos), 20, 0)
-       pygame.display.update()
-
